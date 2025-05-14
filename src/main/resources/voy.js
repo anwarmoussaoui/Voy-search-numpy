@@ -475,11 +475,13 @@ function termFreqVector(tokens, vocabulary) {
     });
     return vec;
 }
-
+let wasmInstance = null;
 // ----- MAIN -----
-(async () => {
+globalThis.runVoySearch = async function(scrappedData,queryy){
     try {
-        const wasm = await initWasm();
+        if (!wasmInstance) {
+                    wasmInstance = await initWasm();
+                }
    
         const texts = scrappedData;
 
@@ -517,6 +519,6 @@ function termFreqVector(tokens, vocabulary) {
 
     } catch (error) {
         console.error('Error:', error);
-        process.exit(1);
     }
-})();
+}
+
