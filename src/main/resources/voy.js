@@ -476,8 +476,46 @@ function termFreqVector(tokens, vocabulary) {
     return vec;
 }
 let wasmInstance = null;
+
+
+
+
+
+
+
+const scrappedData = [
+    {
+        id: "1",
+        title: "AI Trends in 2025",
+        text: "This article covers the latest advancements and trends in artificial intelligence, including deep learning and neural networks.",
+        url: "https://company.com/articles/ai-trends-2025"
+    },
+    {
+        id: "2",
+        title: "Performance Optimization Techniques",
+        text: "Tips and best practices for optimizing the performance of web applications and backend services.",
+        url: "https://company.com/articles/performance-optimization"
+    },
+    {
+        id: "3",
+        title: "Introduction to Quantum Computing",
+        text: "A beginner's guide to the concepts of quantum computing and its potential impact on various industries.",
+        url: "https://company.com/articles/quantum-computing-intro"
+    }
+];
+
+// Your user query
+const userQuery = "AI and neural networks";
+
+// Run the search with your function
+
+
+
+
+
 // ----- MAIN -----
 globalThis.runVoySearch = async function(scrappedData,queryy){
+console.time("search");
     try {
         if (!wasmInstance) {
                     wasmInstance = await initWasm();
@@ -502,23 +540,25 @@ globalThis.runVoySearch = async function(scrappedData,queryy){
         const queryText = queryy;
         const queryEmbedding = termFreqVector(tokenize(queryText), vocabulary);
 
-        const results = index.search(queryEmbedding, 2);
-
-        console.log("Search Results:");
+        const results = index.search(queryEmbedding, 1);
         results.neighbors.forEach(result => {
             const fullData = texts.find(t => t.id === result.id);
             if (fullData) {
                 console.log(`- Match ${fullData.id}: ${fullData.title}`);
-                console.log(`  Text: ${fullData.text}`);
-                console.log(`  Text: ${fullData.title}`);
+                //console.log(`  Text: ${fullData.text}`);
+                //console.log(`  Text: ${fullData.title}`); uncomment this if you want to use see the scrapped data from python library
             } else {
                 console.log(`- Match ${result.id}: (no full data found)`);
             }
         });
 
 
+
     } catch (error) {
         console.error('Error:', error);
     }
+    console.timeEnd("search")
 }
 
+
+runVoySearch(scrappedData, userQuery);

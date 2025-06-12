@@ -12,20 +12,21 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class Main {
-
     private static final String BASE_URL = "https://docs.python.org/3/library/math.html";
     private static final String WASM_PATH = "./src/main/resources/voy_search_bg.wasm";
     private static final String JS_MODULE = "/voy.js";
     private static final int CHUNK_SIZE = 30;
 
     public static void main(String[] args) {
+
         try (Context context = createPolyglotContext();
              Scanner scanner = new Scanner(System.in)) {
+
 
             List<Map<String, String>> texts = scrapePythonMathDocs();
 
             loadWasmModule(context);
-            context.eval(Source.newBuilder("js", Main.class.getResource(JS_MODULE))
+            context.eval(Source.newBuilder("js", Objects.requireNonNull(Main.class.getResource(JS_MODULE)))
                     .mimeType("application/javascript+module")
                     .build());
 

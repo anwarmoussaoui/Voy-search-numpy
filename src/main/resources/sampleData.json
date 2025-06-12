@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "title": "AI Trends in 2025",
+    "text": "This article covers the latest advancements and trends in artificial intelligence, including deep learning and neural networks.",
+    "url": "https://company.com/articles/ai-trends-2025"
+  },
+  {
+    "id": "2",
+    "title": "Performance Optimization Techniques",
+    "text": "Tips and best practices for optimizing the performance of web applications and backend services.",
+    "url": "https://company.com/articles/performance-optimization"
+  },
+  {
+    "id": "3",
+    "title": "Introduction to Quantum Computing",
+    "text": "A beginner's guide to the concepts of quantum computing and its potential impact on various industries.",
+    "url": "https://company.com/articles/quantum-computing-intro"
+  }
+]
