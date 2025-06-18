@@ -448,7 +448,7 @@ async function initWasm() {
     const imports = {
         "./voy_search_bg.js": bg,
         env: {
-            memory: new WebAssembly.Memory({ initial: 256 })
+            memory: new WebAssembly.Memory({ initial: 512 })
         }
     };
 
@@ -485,19 +485,19 @@ let wasmInstance = null;
 
 const scrappedData = [
     {
-        id: "1",
+        id: 1,
         title: "AI Trends in 2025",
         text: "This article covers the latest advancements and trends in artificial intelligence, including deep learning and neural networks.",
         url: "https://company.com/articles/ai-trends-2025"
     },
     {
-        id: "2",
+        id: 2,
         title: "Performance Optimization Techniques",
         text: "Tips and best practices for optimizing the performance of web applications and backend services.",
         url: "https://company.com/articles/performance-optimization"
     },
     {
-        id: "3",
+        id: 3,
         title: "Introduction to Quantum Computing",
         text: "A beginner's guide to the concepts of quantum computing and its potential impact on various industries.",
         url: "https://company.com/articles/quantum-computing-intro"
@@ -515,11 +515,7 @@ const userQuery = "AI and neural networks";
 
 // ----- MAIN -----
 globalThis.runVoySearch = async function(scrappedData,queryy){
-console.time("search");
-    try {
-        if (!wasmInstance) {
-                    wasmInstance = await initWasm();
-                }
+        wasmInstance = await initWasm();
    
         const texts = scrappedData;
 
@@ -544,7 +540,7 @@ console.time("search");
         results.neighbors.forEach(result => {
             const fullData = texts.find(t => t.id === result.id);
             if (fullData) {
-                console.log(`- Match ${fullData.id}: ${fullData.title}`);
+                //console.log(`- Match ${fullData.id}: ${fullData.title}`);
                 //console.log(`  Text: ${fullData.text}`);
                 //console.log(`  Text: ${fullData.title}`); uncomment this if you want to use see the scrapped data from python library
             } else {
@@ -552,13 +548,7 @@ console.time("search");
             }
         });
 
-
-
-    } catch (error) {
-        console.error('Error:', error);
-    }
-    console.timeEnd("search")
 }
 
 
-runVoySearch(scrappedData, userQuery);
+//runVoySearch(scrappedData, userQuery);

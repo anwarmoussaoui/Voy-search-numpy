@@ -43,6 +43,7 @@ public class Main {
 
     private static Context createPolyglotContext() {
         Map<String, String> options = new HashMap<>();
+        options.put("engine.CompilationFailureAction", "Diagnose");
         options.put("js.webassembly", "true");
         options.put("js.text-encoding", "true");
 

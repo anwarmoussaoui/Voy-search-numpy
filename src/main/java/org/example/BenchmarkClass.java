@@ -12,8 +12,8 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-@Warmup(iterations = 3, time = 10)
-@Measurement(iterations = 3, time = 10)
+@Warmup(iterations = 6, time = 10)
+@Measurement(iterations = 6, time = 10)
 @Fork(1)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
@@ -21,23 +21,24 @@ import java.util.concurrent.TimeUnit;
 public class BenchmarkClass {
     private static final String WASM_PATH = "./src/main/resources/voy_search_bg.wasm";
     private static final String JS_MODULE = "/voy.js";
-    public Context context;
+    public final Context context;
 
 
-    @Setup(Level.Trial)
-    public void setup() throws IOException {
+    public BenchmarkClass () {
             Context context = createPolyglotContext();
 
-
-
-            // Load wasm module into JS context
+        try {
             loadWasmModule(context);
-
             // Load JS module with your runVoySearch function
             context.eval(Source.newBuilder("js", Objects.requireNonNull(BenchmarkClass.class.getResource(JS_MODULE)))
                     .mimeType("application/javascript+module")
                     .build());
             this.context=context;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
 
     }
 
@@ -45,10 +46,7 @@ public class BenchmarkClass {
     public void test() throws IOException {
 
             String fixedQuery = "AI and neural networks";
-        // Sample data as before
             List<Map<String, String>> sampleData = getSampleData();
-
-            // Call runVoySearch in JS with sample data and fixed query
             context.getBindings("js").getMember("runVoySearch").execute(sampleData, fixedQuery);
 
 
